@@ -5,19 +5,42 @@
     <title>Title</title>
 
     <style>
-        canvas {
-            border:1px solid #d3d3d3;
-            background: blue url("galaxy.jpg");
+       canvas {
+            border:1px solid #54d369;
+            background: #7cff33 url("galaxy.jpg");
+
         }
         img {
             display:none;
         }
+        /*div #id-canvas */
     </style>
 
+
+
 </head>
-<canvas id="myCanvas" width="500" height="400"></canvas>
-<body onload="startGame()">
+
+<!--<body onload="startGame()">-->
+<body>
+<div id="board">
+    <div id="id-canvas"><canvas id="myCanvas" width="800" height="800"></canvas></div>
+    <div id="id-info">
+        <p>Input (0-400) - (400-800) a</p>
+        <input id="a" type="number" />
+        <p>Input (0-400) - (400-800) b</p>
+        <input id="b" type="number"/>
+        <button type="button" onclick="startGame()">Click</button>
+        <button type="button" onclick="setRedraw(false)">Stop</button>
+    </div>
+</div>
+
+
 <script src="StartGame.js"></script>
+<script src="Object.Basement.js"></script>
+<script src="Object.MovementLine.js"></script>
+<script src="Object.Planet.js"></script>
+
 
 </body>
+
 </html>

@@ -1,126 +1,82 @@
+
 let c = document.getElementById("myCanvas");
 let ctx = c.getContext("2d");
-let value_Width= 500;
-let value_Height= 400;
-let myBasement,myCoordinate,myPlanetA,myPlanetB,myBomb;
-let sizeXbasement=50;
-let sizeYbasement=50;
-let coorXbasement=value_Height/2-25;
-let coorYbasement=value_Height/2-25;
+let value_Width = 800; // canvas size
+let value_Height = 800; // canvas size
+let small_width = value_Width / 40;
+let small_height = value_Height / 40;
+let myBasement, myCoordinate, myPlanetA, myPlanetB, myLine, myLine2;
+let sizeXbasement = 50;
+let sizeYbasement = 50;
+let coorXbasement = value_Height / 2 - 25;
+let coorYbasement = value_Width / 2 - 25;
+let coorX = value_Width / 2;
+let coorY = value_Height / 2;
+let dotSize = 1;
+let distanceUnit = 16;
+
+let value_a, value_b, value_x, value_y;
+let run = 0;
+let myLines = [];
 
 function startGame() {
     myBasement = new Basement(coorXbasement, coorYbasement, sizeXbasement, sizeYbasement);
-    myCoordinate= new Coordinate(100,100,10,10);
-    myPlanetA= new PlanetA(100,100,50,50);
-    myPlanetB= new PlanetB(100,100,50,50);
-    myBomb= new Bomb(coorXbasement+15,coorYbasement+15,20,20);
-    myCoordinate.draw();
-    myBasement.draw();
-    myPlanetA.draw();
-    myPlanetB.draw();
-    myBomb.draw();
-    // myGameArea.start();
+    myCoordinate = new Basement(coorX, coorY, 0, 0);
+    myLine = new Basement(coorX, coorY, dotSize, dotSize);
+    myLine2 = new Basement(coorX, coorY, dotSize, dotSize);
+    myLines.push(myLine);
+    myLines.push(myLine2);
+    myCoordinate.drawCoordinate();
+    myPlanetA = new Planet(coorX, coorY, 20, 20);
+
+    value_b = parseFloat(document.getElementById("b").value);
+    value_a = parseFloat(document.getElementById("a").value);
+    value_a = value_a - coorX;
+    value_b = value_b - coorX;
+    // myLine.drawLine(value_a,value_b);
+
+    // myPlanetA.draw();
+    stop(run);
+    setRedraw(true);
+
 }
 
-// let myGameArea = {
-//
-//     start: function () {
-//         this.context = this.canvas.getContext("2d");
-//         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-//     },
-// };
-
-function Basement (x,y,width,height) {
-    this.x=x;
-    this.y=y;
-    this.width=width;
-    this.height=height;
-    this.image = new Image();
-    this.image.src= "explosive3.png"; //link anh
-    this.draw = function() {
-        let x=this.x;
-        let y=this.y;
-        let width=this.width;
-        let height=this.height;
-        ctx.shadowBlur = 20;
-        ctx.shadowColor = "yellow";
-        ctx.drawImage(this.image, x, y, width, height);
-    }
+function getY(x) {
+    return value_a * x + value_b;
 }
 
-function Coordinate(x,y,width,height) {
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-    this.draw = function () {
-        ctx.beginPath();
-        ctx.shadowBlur = 20;
-        ctx.shadowColor = "yellow";
-        //oy
-        ctx.moveTo(value_Height/2,0);
-        ctx.lineTo(value_Height/2,500);
-        //ox
-        ctx.moveTo(0,value_Height/2);
-        ctx.lineTo(value_Width,value_Height/2);
-        //arrow
-        ctx.moveTo(480,210);
-        ctx.lineTo(value_Width,value_Height-200);
-        ctx.moveTo(480,190);
-        ctx.lineTo(value_Width,value_Height-200);
-        ctx.moveTo(190,20);
-        ctx.lineTo(value_Height/2,0);
-        ctx.moveTo(210,20);
-        ctx.lineTo(value_Height/2,0);
-        ctx.strokeStyle="white";
-        ctx.stroke();
+function setRedraw(bool) {
+    if (bool) {
+        let _x = coorX;
+        let _y = coorY;
+        let _x2 = coorX;
+        let _y2 = coorY;
+        run = setInterval(function () {
+            ctx.clearRect(0, 0, value_Width, value_Height);
+            myCoordinate.drawCoordinate();
+
+            _x += (value_a) / 100;
+            _y += (value_b) / 100;
+
+            _x2 -= (value_a) / 100;
+            _y2 -= (value_b) / 100;
+            myLine.drawLine(_x, _y);
+            myLine2.drawLine(_x2, _y2);
+            console.log(_x, _y);
+
+            // for (let i = 0; i < myLines.length; i++) {
+            //     myLines[i].drawLine(_x,_y);
+            // }
+
+        }, 100)
+    } else {
+        stop(run);
     }
+
 }
 
-function PlanetA(x,y,width,height) {
-    this.x=x;
-    this.y=y;
-    this.width=width;
-    this.height=height;
-    this.image = new Image();
-    this.image.src= "explosive4.png"; //link anh
-    this.draw = function() {
-        let x=this.x*Math.random();
-        let y=this.y*Math.random();
-        ctx.shadowBlur = 20;
-        ctx.shadowColor = "yellow";
-        ctx.drawImage(this.image, x, y, width, height);
-    }
-}
-function PlanetB(x,y,width,height) {
-    this.x=x;
-    this.y=y;
-    this.width=width;
-    this.height=height;
-    this.image = new Image();
-    this.image.src= "explosive4.png"; //link anh
-    this.draw = function() {
-        let x=this.x*Math.random();
-        let y=this.y*Math.random();
-        ctx.shadowBlur = 20;
-        ctx.shadowColor = "yellow";
-        ctx.drawImage(this.image, x, y, width, height);
-    }
+function stop(run) {
+    clearInterval(run);
 }
 
-function Bomb(x,y,width,height) {
-    this.x=x;
-    this.y=y;
-    this.width=width;
-    this.height=height;
-    this.image = new Image();
-    this.image.src= "explosive5.png"; //link anh
-    this.draw = function() {
-        let x=this.x;
-        let y=this.y;
-        ctx.shadowBlur = 20;
-        ctx.shadowColor = "yellow";
-        ctx.drawImage(this.image, x, y, width, height);
-    }
-}
 

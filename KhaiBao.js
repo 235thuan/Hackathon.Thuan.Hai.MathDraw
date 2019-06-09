@@ -1,11 +1,9 @@
+let cvGame = document.getElementById('myCanvas');
+let ctxGame = cvGame.getContext('2d');
+let cvBullet = document.getElementById('myCanvas2');
+let ctxBullet = cvBullet.getContext('2d');
+let cvExplosive = document.getElementById('myCanvas4');
+let ctxExplosive = cvExplosive.getContext('2d');
 
-let myGameArea = {
-    canvas: document.createElement("canvas"),
-    start: function () {
-        this.canvas.width = value_Width;
-        this.canvas.height = value_Height;
-        this.context = this.canvas.getContext("2d");
-        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-    },
-};
-
+// let cvIntro = document.getElementById('myCanvas3');
+// let ctxIntro = cvIntro.getContext('2d');
